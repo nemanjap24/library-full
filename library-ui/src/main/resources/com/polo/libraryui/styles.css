@@ -1,0 +1,79 @@
+.root {
+    -fx-background-color: linear-gradient(to bottom, #007acc, #1e90ff); /* Blue gradient */
+}
+
+.start-page {
+    -fx-alignment: center;         /* Center contents */
+    -fx-spacing: 20px;             /* Space between buttons */
+    -fx-padding: 50px;             /* Padding around the VBox */
+}
+
+.button {
+    -fx-font-family: "Verdana";       /* Font family */
+    -fx-font-size: 18px;              /* Font size */
+    -fx-font-weight: bold;            /* Font weight */
+    -fx-text-fill: white;             /* Text color */
+    -fx-background-color: #005f99;   /* Button color */
+    -fx-border-radius: 10px;          /* Rounded corners */
+    -fx-padding: 10px 20px;           /* Button padding */
+}
+
+.button:hover {
+    -fx-background-color: #003f66;   /* Darker color on hover */
+    -fx-cursor: hand;                /* Change cursor to pointer */
+}
+
+/* Text Field Styles */
+.text-field, .password-field {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #dddddd;
+    -fx-border-radius: 5;
+    -fx-padding: 5;
+}
+
+.text-field:focused, .password-field:focused {
+    -fx-border-color: #005f99;  /* Highlight text field on focus */
+}
+
+/* Label Styles */
+.label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #333333;
+}
+
+/* Form Alignment & Padding */
+.vbox {
+    -fx-spacing: 15;
+    -fx-alignment: center;
+    -fx-padding: 20;
+}
+
+/* GridPane Styles */
+.grid-pane {
+    -fx-padding: 20;
+    -fx-hgap: 15;
+    -fx-vgap: 10;
+}
+
+/* Title Label Styles */
+.label-title {
+    -fx-font-family: "Courier New";
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+}
+
+/* Form Container Styles (Login/Signup forms) */
+.form-container {
+    -fx-padding: 20;
+    -fx-border-radius: 10px;
+    -fx-border-color: #dddddd;
+    -fx-border-width: 2;
+    -fx-background-color: #f9f9f9;
+    -fx-effect: innershadow(gaussian, rgba(0, 0, 0, 0.1), 5, 0, 1, 1);
+}
+
+/* Focused input fields */
+.text-field:focused, .password-field:focused {
+    -fx-border-color: #005f99;
+}
