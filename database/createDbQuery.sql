@@ -1,12 +1,13 @@
 -- Drop and recreate "users" table
 DROP TABLE IF EXISTS "users";
 CREATE TABLE "users" (
-                         "user_id" INTEGER NOT NULL UNIQUE ,
+                         "user_id" INTEGER NOT NULL UNIQUE,
                          "username" TEXT NOT NULL UNIQUE,
                          "password" TEXT NOT NULL,
                          "role_id" INTEGER NOT NULL,
                          "email" TEXT NOT NULL UNIQUE,
-                         PRIMARY KEY("user_id" AUTOINCREMENT)
+                         PRIMARY KEY("user_id" AUTOINCREMENT),
+                         FOREIGN KEY("role_id") REFERENCES "roles"("roles_id")
 );
 
 -- Drop and recreate "books" table
@@ -37,6 +38,8 @@ CREATE TABLE "transaction" (
                                "action" TEXT NOT NULL,
                                "date" TEXT NOT NULL,
                                PRIMARY KEY("transaction_id" AUTOINCREMENT),
-                               FOREIGN KEY("book_id") REFERENCES "books"("book_id"),
                                FOREIGN KEY("user_id") REFERENCES "users"("user_id")
+                                   ON DELETE CASCADE,
+                               FOREIGN KEY("book_id") REFERENCES "books"("book_id")
+                                   ON DELETE CASCADE
 );
