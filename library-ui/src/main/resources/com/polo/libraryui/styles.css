@@ -18,9 +18,41 @@
     -fx-padding: 10px 20px;           /* Button padding */
 }
 
+
 .button:hover {
     -fx-background-color: #003f66;   /* Darker color on hover */
     -fx-cursor: hand;                /* Change cursor to pointer */
+}
+
+.button-lend {
+    -fx-font-family: "Verdana";       /* Font family */
+    -fx-font-size: 18px;              /* Font size */
+    -fx-font-weight: bold;            /* Font weight */
+    -fx-text-fill: white;             /* Text color */
+    -fx-background-color: #49ac4d;   /* Button color */
+    -fx-border-radius: 10px;          /* Rounded corners */
+    -fx-padding: 10px 20px;           /* Button padding */
+}
+
+.button-lend:hover{
+    -fx-background-color: #38813b;
+    -fx-cursor: hand;
+}
+
+.button-borrow {
+    -fx-font-family: "Verdana";       /* Font family */
+    -fx-font-size: 18px;              /* Font size */
+    -fx-font-weight: bold;            /* Font weight */
+    -fx-text-fill: white;             /* Text color */
+    -fx-background-color: #ff7043;   /* Button color */
+    -fx-border-radius: 10px;          /* Rounded corners */
+    -fx-padding: 10px 20px;
+}
+
+.button-borrow:hover{
+    -fx-background-color: #e64a19;
+    -fx-cursor: hand;
+
 }
 
 /* Text Field Styles */
@@ -29,6 +61,7 @@
     -fx-border-color: #dddddd;
     -fx-border-radius: 5;
     -fx-padding: 5;
+    -fx-max-width: 100;
 }
 
 .text-field:focused, .password-field:focused {
@@ -38,7 +71,7 @@
 /* Label Styles */
 .label {
     -fx-font-size: 14px;
-    -fx-text-fill: #333333;
+    -fx-text-fill: #dddddd;
 }
 
 /* Form Alignment & Padding */
@@ -57,10 +90,17 @@
 
 /* Title Label Styles */
 .label-title {
-    -fx-font-family: "Courier New";
-    -fx-font-size: 24px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #333333;
+    -fx-font-family: "Georgia", serif; /* Elegant font for a modern look */
+    -fx-font-size: 20px;              /* Slightly larger for emphasis */
+    -fx-font-weight: bold;            /* Bold for prominence */
+    -fx-text-fill: #005f99;           /* Deep blue for a professional touch */
+    -fx-alignment: center;            /* Center-align text */
+    -fx-padding: 20px;                /* Spacious padding around the label */
+    -fx-background-color: #e6f7ff;    /* Soft blue background */
+    -fx-background-radius: 15px;      /* Smooth rounded edges */
+    -fx-border-color: #1e90ff;        /* Subtle matching border */
+    -fx-border-width: 2px;            /* Thin, clean border */
+    -fx-border-radius: 15px;
 }
 
 /* Form Container Styles (Login/Signup forms) */
@@ -76,4 +116,18 @@
 /* Focused input fields */
 .text-field:focused, .password-field:focused {
     -fx-border-color: #005f99;
+}
+
+.back-button {
+    -fx-font-size: 14px;
+    -fx-background-color: #ff4343; /* Orange background */
+    -fx-text-fill: white;         /* White text */
+    -fx-padding: 10;              /* Padding inside the button */
+    -fx-font-family: "Verdana";
+    -fx-alignment: center;
+}
+
+.back-button:hover {
+    -fx-background-color: #e61919; /* Darker orange on hover */
+    -fx-cursor: hand;              /* Pointer cursor on hover */
 }

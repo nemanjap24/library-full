@@ -1,12 +1,10 @@
 package com.polo.libraryui;
 
 import javafx.application.Application;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -15,68 +13,31 @@ import java.util.List;
 public class HelloApplication extends Application {
     @Override
     public void start(Stage primaryStage) {
+        Parent root = StartScene.createStartScene(primaryStage).getRoot();
 
-        // Create scenes
-        Scene scene1 = createStartPage(primaryStage);
-        Scene scene2 = createSignupForm(primaryStage);
-        Scene loginScene = LoginScene.createLoginScene();
+        Scene registerScene = RegisterScene.createRegisterScene(primaryStage, root.getScene());
+        Scene loginScene = LoginScene.createLoginScene(primaryStage, root.getScene());
+
+
         List<BookTest> books = getBooksList();
-        Scene scene4a = createUserDashboard(books);
-        Scene scene4b = createAdminDashboard();
+        Scene userScene = createUserDashboard(books, primaryStage, loginScene);
+        Scene adminScene = createAdminDashboard();
 
-        // Navigation logic
-        Button loginButton = (Button) scene1.lookup("#loginButton");
-        Button signupButton = (Button) scene1.lookup("#signupButton");
-        Button registerButton = (Button) scene2.lookup("#registerButton");
+        Button loginButton = (Button) root.lookup("#loginButton");
+        Button signupButton = (Button) root.lookup("#signupButton");
+        Button registerButton = (Button) registerScene.lookup("#registerButton");
+        Button loginSuccess = (Button) loginScene.lookup("#loginButton");
 
         loginButton.setOnAction(e -> primaryStage.setScene(loginScene));
-        signupButton.setOnAction(e -> primaryStage.setScene(scene2));
+        signupButton.setOnAction(e -> primaryStage.setScene(registerScene));
         registerButton.setOnAction(e -> primaryStage.setScene(loginScene));
+        loginSuccess.setOnAction(e -> primaryStage.setScene(userScene));
 
-        primaryStage.setScene(scene1);
+        primaryStage.setScene(root.getScene());
         primaryStage.setTitle("Library App");
         primaryStage.show();
     }
 
-    private Scene createStartPage(Stage primaryStage) {
-        VBox startPage = new VBox(10);
-        startPage.setId("start-page");
-        Button loginButton = new Button("Login");
-        loginButton.setId("loginButton");
-        Button signupButton = new Button("Signup");
-        signupButton.setId("signupButton");
-        startPage.getChildren().addAll(loginButton, signupButton);
-        startPage.setStyle("-fx-alignment: center;");
-        Scene scene1 = new Scene(startPage, 300, 200);
-        scene1.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
-        return scene1;
-    }
-
-    private Scene createSignupForm(Stage primaryStage) {
-        GridPane signupForm = new GridPane();
-        signupForm.setId("form-container");
-        signupForm.setVgap(10);
-        signupForm.setHgap(10);
-
-        signupForm.add(new Label("Username:"), 0, 0);
-        signupForm.add(new TextField(), 1, 0);
-        signupForm.add(new Label("Email:"), 0, 1);
-        signupForm.add(new TextField(), 1, 1);
-        signupForm.add(new Label("Password:"), 0, 2);
-        signupForm.add(new PasswordField(), 1, 2);
-        signupForm.add(new Label("Re-enter Password:"), 0, 3);
-        signupForm.add(new PasswordField(), 1, 3);
-
-        Button registerButton = new Button("Register");
-        registerButton.setId("registerButton");
-        signupForm.add(registerButton, 1, 4);
-
-        signupForm.setStyle("-fx-alignment: center;");
-
-        Scene scene2 = new Scene(signupForm, 400, 300);
-        scene2.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
-        return scene2;
-    }
 
 
 
@@ -88,8 +49,8 @@ public class HelloApplication extends Application {
         );
     }
 
-    private Scene createUserDashboard(List<BookTest> books) {
-        VBox userDashboard = UserDashboard.createUserDashboard(books);
+    private Scene createUserDashboard(List<BookTest> books, Stage primaryStage, Scene startScene) {
+        VBox userDashboard = UserDashboard.createUserDashboard(books, primaryStage, startScene);
         Scene scene4a = new Scene(userDashboard, 600, 400);
         scene4a.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
         return scene4a;
