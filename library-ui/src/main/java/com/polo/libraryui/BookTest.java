@@ -44,4 +44,9 @@ public class BookTest {
     public void incrementCopies() {
         copies++;
     }
+    public void decrementCopies(){
+        if(copies >= 1){
+            copies--;
+        }
+    }
 }
