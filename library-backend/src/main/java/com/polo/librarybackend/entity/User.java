@@ -1,14 +1,8 @@
 package com.polo.librarybackend.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "users")
 public class User {
     @Id
@@ -49,10 +43,10 @@ public class User {
         this.password = password;
     }
 
-    public Role getRole() {
-        return role;
+    public String getRole() {
+        return role.getRoleName();
     }
-
+    // todo: please update
     public void setRole(Role role) {
         this.role = role;
     }
@@ -63,5 +57,16 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", role=" + role.getRoleName() +
+                ", email='" + email + '\'' +
+                '}';
     }
 }
