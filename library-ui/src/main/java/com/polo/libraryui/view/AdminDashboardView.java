@@ -24,13 +24,32 @@ public class AdminDashboardView {
         logoutButton = new Button("Logout");
         logoutButton.getStyleClass().add("back-button");
 
+        viewInventoryButton.getStyleClass().add("button-view");     // Blue style
+        registerBookButton.getStyleClass().add("button-register");  // Green style
+        removeBookButton.getStyleClass().add("button-remove");      // Red style
+
+
         root.getChildren().addAll(viewInventoryButton, registerBookButton,
                 removeBookButton, logoutButton);
     }
 
-    public Parent getView() { return root; }
-    public Button getViewInventoryButton() { return viewInventoryButton; }
-    public Button getRegisterBookButton() { return registerBookButton; }
-    public Button getRemoveBookButton() { return removeBookButton; }
-    public Button getLogoutButton() { return logoutButton; }
+    public Parent getView() {
+        return root;
+    }
+
+    public Button getViewInventoryButton() {
+        return viewInventoryButton;
+    }
+
+    public Button getRegisterBookButton() {
+        return registerBookButton;
+    }
+
+    public Button getRemoveBookButton() {
+        return removeBookButton;
+    }
+
+    public Button getLogoutButton() {
+        return logoutButton;
+    }
 }
