@@ -19,7 +19,7 @@ public class UserDashboardController {
     private SceneManager sceneManager;
     private User currentUser;
     private BookService bookService;
-    private final TransactionService transactionService;
+    private TransactionService transactionService;
     private List<Book> books;
 
     public UserDashboardController(Stage stage, SceneManager sceneManager, List<Book> books, User user) {
@@ -28,62 +28,63 @@ public class UserDashboardController {
         this.books = books;
         this.currentUser = user;
         this.bookService = new BookService();
-        this.view = new UserDashboardView(books);
         this.transactionService = new TransactionService();
+        this.view = new UserDashboardView(books);
         initialize();
     }
 
     private void initialize() {
-
+        // Set up button handlers
         view.getRefreshButton().setOnAction(e -> handleRefresh());
-        view.getLendBookButton().setOnAction(e -> {
-            // Handle lend book logic
-        });
-        view.getBorrowBookButton().setOnAction(e -> {
-            // Handle borrow book logic
-        });
+        view.getBorrowBookButton().setOnAction(e -> handleBorrowBook());
+        view.getReturnBookButton().setOnAction(e -> handleReturnBook());
+        view.getRegisterBookButton().setOnAction(e -> sceneManager.showRegisterBookFormScene());
         view.getLogoutButton().setOnAction(e -> sceneManager.showLoginScene());
 
-        view.getBorrowBookButton().setOnAction(e -> handleBorrowBook());
-        view.getLendBookButton().setOnAction(e -> handleReturnBook());
+        // Initial refresh
+        handleRefresh();
     }
-    private void handleBorrowBook() {
-        Book selectedBook = getSelectedBook();
-        if (selectedBook == null) return;
-        transactionService.borrowBook(currentUser, selectedBook.getBookId())
-                .thenRun(this::handleRefresh)
-                .exceptionally(ex -> {
-                    Platform.runLater(() -> showAlert("Error", ex.getMessage()));
-                    System.out.println("handleBorrowBook() failed");
-                    return null;
-                });
-        System.out.println("handleBorrowBook()");
 
+    private void handleBorrowBook() {
+        String selectedItem = view.getAvailableBooksListView().getSelectionModel().getSelectedItem();
+        if (selectedItem == null) {
+            showAlert("Error", "Please select a book to borrow");
+            return;
+        }
+
+        Book selectedBook = getBookFromSelection(selectedItem);
+        if (selectedBook != null) {
+            transactionService.borrowBook(currentUser, selectedBook.getBookId())
+                    .thenRun(this::handleRefresh)
+                    .exceptionally(ex -> {
+                        Platform.runLater(() -> showAlert("Error", ex.getMessage()));
+                        return null;
+                    });
+        }
     }
 
     private void handleReturnBook() {
-        Book selectedBook = getSelectedBook();
-        if(selectedBook == null) return;
-
-        transactionService.returnBook(currentUser, selectedBook.getBookId())
-                .thenRun(this::handleRefresh)
-                .exceptionally(ex -> {
-                    Platform.runLater(() -> showAlert("Error", ex.getMessage()));
-                    return null;
-                });
-    }
-    private Book getSelectedBook() {
-        String selectedItem = view.getBookListView().getSelectionModel().getSelectedItem();
+        String selectedItem = view.getBorrowedBooksListView().getSelectionModel().getSelectedItem();
         if (selectedItem == null) {
-            showAlert("Error", "Please select a book first");
-            return null;
+            showAlert("Error", "Please select a book to return");
+            return;
         }
 
-        try {
-            // Parse ID from the display string format: "ID: %d - %s by %s (Available: %d)"
-            String idStr = selectedItem.substring(4, selectedItem.indexOf(" -"));
-            long bookId = Long.parseLong(idStr);
+        Book selectedBook = getBookFromSelection(selectedItem);
+        if (selectedBook != null) {
+            transactionService.returnBook(currentUser, selectedBook.getBookId())
+                    .thenRun(this::handleRefresh)
+                    .exceptionally(ex -> {
+                        Platform.runLater(() -> showAlert("Error", ex.getMessage()));
+                        return null;
+                    });
+        }
+    }
 
+    private Book getBookFromSelection(String selection) {
+        try {
+            String idStr = selection.substring(4, selection.indexOf(" -"));
+            long bookId = Long.parseLong(idStr);
             return books.stream()
                     .filter(book -> book.getBookId() == bookId)
                     .findFirst()
@@ -96,16 +97,15 @@ public class UserDashboardController {
 
     private void handleRefresh() {
         if (currentUser == null || currentUser.getToken() == null) {
-            // Handle error - redirect to login
             sceneManager.showLoginScene();
             return;
         }
-        System.out.println("HandleRefresh()");
 
         view.getRefreshButton().setDisable(true);
         bookService.getAllBooks(currentUser)
                 .thenAccept(newBooks -> Platform.runLater(() -> {
-                    view.refreshBookList(newBooks);
+                    this.books = newBooks;
+                    view.refreshBookLists(newBooks);
                     view.getRefreshButton().setDisable(false);
                 }))
                 .exceptionally(ex -> {
@@ -116,6 +116,7 @@ public class UserDashboardController {
                     return null;
                 });
     }
+
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.initOwner(stage);
@@ -124,9 +125,10 @@ public class UserDashboardController {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
     public void updateBooks(List<Book> newBooks) {
         this.books = newBooks;
-        view.refreshBookList(newBooks);
+        view.refreshBookLists(newBooks);
     }
 
     public Parent getView() { return view.getView(); }
