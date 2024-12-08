@@ -4,10 +4,10 @@ import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HelloApplication extends Application {
@@ -44,10 +44,12 @@ public class HelloApplication extends Application {
     }
 
     private List<BookTest> getBooksList() {
-        return List.of(
-                new BookTest("Book 1", "1234567890", "Author 1", "2024-12-01", "path/to/book1.jpg", 1),
-                new BookTest("Book 2", "2345678901", "Author 2", "2024-11-28", "path/to/book2.jpg", 2),
-                new BookTest("Book 3", "3456789012", "Author 3", "2024-11-25", "path/to/book3.jpg", 3)
+        return new ArrayList<>(
+                List.of(
+                        new BookTest("Book 1", "1234567890", "Author 1", "2024-12-01", "path/to/book1.jpg", 1),
+                        new BookTest("Book 2", "2345678901", "Author 2", "2024-11-28", "path/to/book2.jpg", 2),
+                        new BookTest("Book 3", "3456789012", "Author 3", "2024-11-25", "path/to/book3.jpg", 3)
+                )
         );
     }
 
