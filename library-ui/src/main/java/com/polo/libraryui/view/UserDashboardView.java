@@ -17,6 +17,7 @@ public class UserDashboardView {
     private Button lendBookButton;
     private Button borrowBookButton;
     private Button logoutButton;
+    private Button refreshButton;
 
     public UserDashboardView(List<Book> books) {
         root = new VBox(20);
@@ -26,29 +27,35 @@ public class UserDashboardView {
         root.getStyleClass().add("root");
 
         bookListView = new ListView<>();
-        for (Book book : books) {
-            String bookInfo = String.format("ID: %d - %s by %s (Available: %d)", book.getBookId(), book.getTitle(), book.getAuthor(), book.getAvailableCopies());
-            bookListView.getStyleClass().add("book-list");
-            bookListView.setPrefHeight(400);
-            bookListView.getItems().add(bookInfo);
-        }
+        refreshBookList(books);
+        bookListView.getStyleClass().add("book-list");
+        bookListView.setPrefHeight(400);
+
+        refreshButton = new Button("Refresh Books");
+        refreshButton.getStyleClass().add("button-refresh");
 
         lendBookButton = new Button("Lend a Book");
         borrowBookButton = new Button("Borrow a Book");
         logoutButton = new Button("Logout");
 
-
-        logoutButton.getStyleClass().add("back-button");
-        lendBookButton.getStyleClass().add("button-lend");
-        borrowBookButton.getStyleClass().add("button-borrow");
-
         HBox actionButtons = new HBox(20);
-
-        actionButtons.getChildren().addAll(borrowBookButton, lendBookButton);
+        actionButtons.getChildren().addAll(borrowBookButton, lendBookButton, refreshButton);
         actionButtons.setAlignment(Pos.CENTER);
 
         root.getChildren().addAll(bookListView, actionButtons, logoutButton);
         VBox.setMargin(logoutButton, new Insets(10, 0, 20, 0));
+    }
+
+    public Button getRefreshButton() {
+        return refreshButton;
+    }
+    public void refreshBookList(List<Book> books) {
+        bookListView.getItems().clear();
+        for (Book book : books) {
+            String bookInfo = String.format("ID: %d - %s by %s (Available: %d)",
+                    book.getBookId(), book.getTitle(), book.getAuthor(), book.getAvailableCopies());
+            bookListView.getItems().add(bookInfo);
+        }
     }
 
     public Parent getView() {

@@ -2,8 +2,10 @@ package com.polo.libraryui.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.polo.libraryui.SceneManager;
+import com.polo.libraryui.dto.AuthenticationResponse;
 import com.polo.libraryui.dto.LoginRequest;
 import com.polo.libraryui.model.User;
+import com.polo.libraryui.service.BookService;
 import com.polo.libraryui.view.LoginView;
 import javafx.application.Platform;
 import javafx.scene.Parent;
@@ -15,6 +17,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.CompletableFuture;
 
 public class LoginController {
     private LoginView view;
@@ -22,6 +25,7 @@ public class LoginController {
     private SceneManager sceneManager;
     private HttpClient httpClient;
     private ObjectMapper objectMapper;
+    private BookService bookService;
 
     public LoginController(Stage stage, SceneManager sceneManager) {
         this.stage = stage;
@@ -29,6 +33,7 @@ public class LoginController {
         this.view = new LoginView();
         this.httpClient = HttpClient.newHttpClient();
         this.objectMapper = new ObjectMapper();
+        this.bookService = new BookService();
         initialize();
     }
 
@@ -46,59 +51,65 @@ public class LoginController {
             return;
         }
 
-        // Disable the login button to prevent multiple clicks
         view.getLoginButton().setDisable(true);
-
-        // Create LoginRequest object
         LoginRequest loginRequest = new LoginRequest(username, password);
 
         try {
             String requestBody = objectMapper.writeValueAsString(loginRequest);
 
-            // Create HttpRequest
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create("http://localhost:8080/api/login"))
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(requestBody, StandardCharsets.UTF_8))
                     .build();
 
-            // Send request asynchronously
             httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
                     .thenApply(response -> {
                         if (response.statusCode() == 200) {
-                            // Success: parse User object
                             try {
-                                return objectMapper.readValue(response.body(), User.class);
+                                AuthenticationResponse authResponse =
+                                        objectMapper.readValue(response.body(), AuthenticationResponse.class);
+
+                                User user = new User();
+                                user.setUsername(authResponse.getUsername());
+                                user.setRole(authResponse.getRole());
+                                user.setToken(authResponse.getToken());
+                                return user;
                             } catch (Exception ex) {
                                 ex.printStackTrace();
                                 return null;
                             }
                         } else {
-                            // Handle bad response
-                            System.err.println("Login failed with status code: " + response.statusCode());
                             return null;
                         }
                     })
-                    .thenAccept(user -> Platform.runLater(() -> {
-                        // Re-enable the login button
-                        view.getLoginButton().setDisable(false);
-
+                    .thenCompose(user -> {
                         if (user != null) {
-                            // Navigate to appropriate dashboard based on user role
-                            if ("admin".equalsIgnoreCase(user.getRole())) {
+                            // Fetch books after successful login
+                            return bookService.getAllBooks(user)
+                                    .thenApply(books -> {
+                                        sceneManager.updateBooks(books);
+                                        return user;
+                                    });
+                        }
+                        return CompletableFuture.completedFuture(null);
+                    })
+                    .thenAccept(user -> Platform.runLater(() -> {
+                        view.getLoginButton().setDisable(false);
+                        if (user != null) {
+                            sceneManager.setCurrentUser(user); // Add this line
+                            if ("ADMIN".equalsIgnoreCase(user.getRole())) {
                                 sceneManager.showAdminDashboardScene();
                             } else {
                                 sceneManager.showUserDashboardScene();
                             }
                         } else {
-                            // Login failed
                             showAlert("Login Failed", "Invalid username or password.");
                         }
                     }))
                     .exceptionally(ex -> {
                         ex.printStackTrace();
                         Platform.runLater(() -> {
-                            // Re-enable the login button
                             view.getLoginButton().setDisable(false);
                             showAlert("Error", "An error occurred while trying to log in.");
                         });
@@ -107,11 +118,8 @@ public class LoginController {
 
         } catch (Exception ex) {
             ex.printStackTrace();
-            Platform.runLater(() -> {
-                // Re-enable the login button
-                view.getLoginButton().setDisable(false);
-                showAlert("Error", "An error occurred while trying to log in.");
-            });
+            view.getLoginButton().setDisable(false);
+            showAlert("Error", "An error occurred while trying to log in.");
         }
     }
 
