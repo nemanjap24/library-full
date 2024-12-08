@@ -2,6 +2,8 @@ package com.polo.librarybackend.entity;
 
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "`transaction`") // Add backticks to escape table name
 public class Transaction {
@@ -73,5 +75,18 @@ public class Transaction {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Transaction that = (Transaction) o;
+        return Objects.equals(transactionId, that.transactionId) && Objects.equals(user, that.user) && Objects.equals(book, that.book) && Objects.equals(action, that.action) && Objects.equals(date, that.date);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(transactionId, user, book, action, date);
     }
 }

@@ -1,6 +1,7 @@
 package com.polo.librarybackend.controller;
 
 import com.polo.librarybackend.dto.TransactionDTO;
+import com.polo.librarybackend.entity.Book;
 import com.polo.librarybackend.entity.Transaction;
 import com.polo.librarybackend.services.TransactionService;
 import org.springframework.http.ResponseEntity;
@@ -40,5 +41,14 @@ public class TransactionController {
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<Transaction>> getUserTransactions(@PathVariable Long userId) {
         return ResponseEntity.ok(transactionService.getUserTransactionHistory(userId));
+    }
+    @GetMapping("/borrowed/{userId}")
+    public ResponseEntity<List<Book>> getUserBorrowedBooks(@PathVariable Long userId) {
+        try {
+            List<Book> borrowedBooks = transactionService.getUserBorrowedBooks(userId);
+            return ResponseEntity.ok(borrowedBooks);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 }

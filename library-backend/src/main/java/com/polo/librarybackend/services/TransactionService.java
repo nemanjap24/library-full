@@ -71,6 +71,12 @@ public class TransactionService {
         transaction.setDate(LocalDate.now().toString());
         return transactionRepository.save(transaction);
     }
+    public List<Book> getUserBorrowedBooks(Long userId) {
+        return transactionRepository.findAllActiveBorrows().stream()
+                .filter(transaction -> transaction.getUser().getUserId().equals(userId))
+                .map(Transaction::getBook)
+                .toList();
+    }
 
     public List<Transaction> getUserTransactionHistory(Long userId) {
         return transactionRepository.findByUser_UserIdOrderByDateDesc(userId);
