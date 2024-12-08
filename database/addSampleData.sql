@@ -2,14 +2,13 @@ BEGIN TRANSACTION;
 
 INSERT INTO `roles` (role_name) VALUES
                                     ('admin'),
-                                    ('librarian'),
-                                    ('member');
+                                    ('user');
 
 INSERT INTO `users` (username, password, role_id, email) VALUES
                                                              ('admin_user', 'password123', 1, 'admin@example.com'),
                                                              ('librarian_john', 'libpass456', 2, 'john.librarian@example.com'),
-                                                             ('member_smith', 'member789', 3, 'smith.member@example.com'),
-                                                             ('member_jane', 'securepass123', 3, 'jane.doe@example.com');
+                                                             ('member_smith', 'member789', 2, 'smith.member@example.com'),
+                                                             ('member_jane', 'securepass123', 2, 'jane.doe@example.com');
 
 INSERT INTO `books` (title, author, isbn, available_copies) VALUES
                                                                 ('To Kill a Mockingbird', 'Harper Lee', '9780061120084', 5),
