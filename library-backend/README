@@ -1,0 +1,6 @@
+
+For development, 256-bit random key encoded in Base64
+To generate jwt.secret use
+```
+openssl rand -base64 32
+```
