@@ -20,7 +20,7 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user){
-        // TODO: Create UserDTO, then map it to user.
+        // TODO: Create User DTO, then map it to user.
         return new ResponseEntity<>(userService.createUser(user), HttpStatus.CREATED);
     }
 
@@ -29,11 +29,9 @@ public class UserController {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
+    // just for testing purposes
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
-        User user = userService.getUserById(id).get();
-        System.out.println(user);
-        System.out.println(user.getRole().getRoleName());
         return userService.getUserById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
