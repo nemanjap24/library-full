@@ -32,4 +32,11 @@ public class UserService {
     public Optional<User> validateUser(String username, String password) {
         return userRepository.findByUsernameAndPassword(username, password);
     }
+    public boolean existsByUsername(String username) {
+        return userRepository.existsByUsername(username);
+    }
+
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
 }
