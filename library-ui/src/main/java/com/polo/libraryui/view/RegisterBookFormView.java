@@ -33,7 +33,13 @@ public class RegisterBookFormView {
         copiesField = new TextField();
         copiesField.setPromptText("Number of Copies");
 
+        titleField.getStyleClass().add("login-field");
+        authorField.getStyleClass().add("login-field");
+        isbnField.getStyleClass().add("login-field");
+        copiesField.getStyleClass().add("login-field");
+
         submitButton = new Button("Register");
+        submitButton.getStyleClass().add("button-register");
 
         root.add(new Label("Title:"), 0, 0);
         root.add(titleField, 1, 0);
@@ -44,6 +50,15 @@ public class RegisterBookFormView {
         root.add(new Label("Copies:"), 0, 3);
         root.add(copiesField, 1, 3);
         root.add(submitButton, 1, 4);
+
+        titleField.getStyleClass().add("login-field");
+        authorField.getStyleClass().add("login-field");
+        isbnField.getStyleClass().add("login-field");
+        copiesField.getStyleClass().add("login-field");
+
+        //root.getStyleClass().add("form-container");
+        root.getStyleClass().add("root");
+
     }
 
     public Parent getView() { return root; }

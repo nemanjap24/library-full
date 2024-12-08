@@ -28,6 +28,10 @@ public class LoginView {
         loginButton = new Button("Login");
         backButton = new Button("Back");
         backButton.getStyleClass().add("back-button");
+        loginButton.getStyleClass().add("button");           // New login button style
+        usernameField.getStyleClass().add("login-field");         // Custom field style
+        passwordField.getStyleClass().add("login-field");         // Custom field style
+
 
         root.getChildren().addAll(usernameField, passwordField, loginButton, backButton);
     }
