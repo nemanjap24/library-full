@@ -74,6 +74,9 @@ public class LoginController {
                                 user.setUsername(authResponse.getUsername());
                                 user.setRole(authResponse.getRole());
                                 user.setToken(authResponse.getToken());
+                                user.setUserId(authResponse.getUserId()); // Make sure this is set
+                                System.out.println("User ID from auth: " + authResponse.getUserId()); // Debug log
+                                sceneManager.setCurrentUser(user);
                                 return user;
                             } catch (Exception ex) {
                                 ex.printStackTrace();
@@ -85,7 +88,6 @@ public class LoginController {
                     })
                     .thenCompose(user -> {
                         if (user != null) {
-                            // Fetch books after successful login
                             return bookService.getAllBooks(user)
                                     .thenApply(books -> {
                                         sceneManager.updateBooks(books);
@@ -97,7 +99,6 @@ public class LoginController {
                     .thenAccept(user -> Platform.runLater(() -> {
                         view.getLoginButton().setDisable(false);
                         if (user != null) {
-                            sceneManager.setCurrentUser(user); // Add this line
                             if ("ADMIN".equalsIgnoreCase(user.getRole())) {
                                 sceneManager.showAdminDashboardScene();
                             } else {
@@ -106,15 +107,7 @@ public class LoginController {
                         } else {
                             showAlert("Login Failed", "Invalid username or password.");
                         }
-                    }))
-                    .exceptionally(ex -> {
-                        ex.printStackTrace();
-                        Platform.runLater(() -> {
-                            view.getLoginButton().setDisable(false);
-                            showAlert("Error", "An error occurred while trying to log in.");
-                        });
-                        return null;
-                    });
+                    }));
 
         } catch (Exception ex) {
             ex.printStackTrace();

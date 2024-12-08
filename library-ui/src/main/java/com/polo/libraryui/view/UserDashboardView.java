@@ -73,4 +73,7 @@ public class UserDashboardView {
     public Button getLogoutButton() {
         return logoutButton;
     }
+    public ListView<String> getBookListView() {
+        return bookListView;
+    }
 }
