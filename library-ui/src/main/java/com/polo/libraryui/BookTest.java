@@ -6,13 +6,15 @@ public class BookTest {
     private String author;
     private String lendDate;
     private String coverImagePath; // Path to the book's cover image
+    public int copies;
 
-    public BookTest(String title, String isbn, String author, String lendDate, String coverImagePath) {
+    public BookTest(String title, String isbn, String author, String lendDate, String coverImagePath, int copies) {
         this.title = title;
         this.isbn = isbn;
         this.author = author;
         this.lendDate = lendDate;
         this.coverImagePath = coverImagePath;
+        this.copies = copies;
     }
 
     public String getTitle() {
@@ -35,4 +37,16 @@ public class BookTest {
         return coverImagePath;
     }
 
+    public int getCopies() {
+        return copies;
+    }
+
+    public void incrementCopies() {
+        copies++;
+    }
+    public void decrementCopies(){
+        if(copies >= 1){
+            copies--;
+        }
+    }
 }

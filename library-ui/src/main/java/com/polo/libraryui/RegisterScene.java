@@ -34,7 +34,7 @@ public class RegisterScene {
 
         signupForm.setStyle("-fx-alignment: center;");
 
-        Scene scene2 = new Scene(signupForm, 400, 300);
+        Scene scene2 = new Scene(signupForm, 800, 600);
         scene2.getStylesheets().add(RegisterScene.class.getResource("styles.css").toExternalForm());
         return scene2;
 

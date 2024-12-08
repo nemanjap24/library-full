@@ -27,7 +27,7 @@ public class LoginScene {
 
         loginForm.setStyle("-fx-alignment: center");
 
-        Scene loginScene = new Scene(loginForm, 400, 300);
+        Scene loginScene = new Scene(loginForm, 800, 600);
         loginScene.getStylesheets().add(LoginScene.class.getResource("styles.css").toExternalForm());
 
         return loginScene;

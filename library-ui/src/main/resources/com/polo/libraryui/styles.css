@@ -61,7 +61,7 @@
     -fx-border-color: #dddddd;
     -fx-border-radius: 5;
     -fx-padding: 5;
-    -fx-max-width: 100;
+    -fx-max-width: 120;
 }
 
 .text-field:focused, .password-field:focused {
@@ -72,6 +72,8 @@
 .label {
     -fx-font-size: 14px;
     -fx-text-fill: #dddddd;
+    -fx-font-weight: bold;
+    -fx-font-family: Verdana;
 }
 
 /* Form Alignment & Padding */
@@ -90,16 +92,16 @@
 
 /* Title Label Styles */
 .label-title {
-    -fx-font-family: "Georgia", serif; /* Elegant font for a modern look */
-    -fx-font-size: 20px;              /* Slightly larger for emphasis */
-    -fx-font-weight: bold;            /* Bold for prominence */
-    -fx-text-fill: #005f99;           /* Deep blue for a professional touch */
-    -fx-alignment: center;            /* Center-align text */
-    -fx-padding: 20px;                /* Spacious padding around the label */
-    -fx-background-color: #e6f7ff;    /* Soft blue background */
-    -fx-background-radius: 15px;      /* Smooth rounded edges */
-    -fx-border-color: #1e90ff;        /* Subtle matching border */
-    -fx-border-width: 2px;            /* Thin, clean border */
+    -fx-font-family: "Georgia", serif;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #005f99;
+    -fx-alignment: center;
+    -fx-padding: 20px;
+    -fx-background-color: #e6f7ff;
+    -fx-background-radius: 15px;
+    -fx-border-color: #1e90ff;
+    -fx-border-width: 2px;
     -fx-border-radius: 15px;
 }
 
@@ -110,7 +112,7 @@
     -fx-border-color: #dddddd;
     -fx-border-width: 2;
     -fx-background-color: #f9f9f9;
-    -fx-effect: innershadow(gaussian, rgba(0, 0, 0, 0.1), 5, 0, 1, 1);
+    /*-fx-effect: innershadow(gaussian, rgba(0, 0, 0, 0.1), 5, 0, 1, 1);*/
 }
 
 /* Focused input fields */

@@ -23,6 +23,7 @@ public class UserDashboard {
         titleLabel.getStyleClass().add("label-title");
         HBox titleBox = new HBox(titleLabel);
         titleBox.setAlignment(Pos.CENTER);
+        titleBox.setStyle("-fx-padding: 10 0 0 0");
 
 
         FlowPane bookDisplay = new FlowPane();
