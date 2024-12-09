@@ -21,6 +21,9 @@ public class SceneManager {
     private UserDashboardController userDashboardController;
     private AdminDashboardController adminDashboardController;
     private RegisterBookFormController registerBookFormController;
+    private InventoryController inventoryController;
+//    private ManageUsersController manageUsersController;
+    private UpdateBookFormController updateBookFormController;
 
     public SceneManager(Stage stage, List<Book> books) {
         this.stage = stage;
@@ -75,6 +78,10 @@ public class SceneManager {
         scene.setRoot(userDashboardController.getView());
     }
 
+    public Stage getStage() {
+        return stage;
+    }
+
     public void showAdminDashboardScene() {
         if (currentUser == null) {
             showLoginScene();
@@ -97,5 +104,18 @@ public class SceneManager {
         if (adminDashboardController != null) {
 //            adminDashboardController.updateBooks(newBooks);
         }
+    }
+    public void showInventoryScene() {
+        inventoryController = new InventoryController(stage, this);
+        scene.setRoot(inventoryController.getView());
+    }
+
+//    public void showManageUsersScene() {
+//        manageUsersController = new ManageUsersController(stage, this);
+//        scene.setRoot(manageUsersController.getView());
+//    }
+    public void showUpdateBookFormScene(Book book) {
+        updateBookFormController = new UpdateBookFormController(stage, this, book);
+        scene.setRoot(updateBookFormController.getView());
     }
 }

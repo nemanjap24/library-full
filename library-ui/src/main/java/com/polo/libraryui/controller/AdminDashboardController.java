@@ -17,20 +17,20 @@ public class AdminDashboardController {
         this.sceneManager = sceneManager;
         this.view = new AdminDashboardView();
         this.currentUser = currentUser;
-
         initialize();
     }
 
     private void initialize() {
-        view.getViewInventoryButton().setOnAction(e -> {
-            // Handle view inventory logic
-        });
+        view.getViewInventoryButton().setOnAction(e -> sceneManager.showInventoryScene());
         view.getRegisterBookButton().setOnAction(e -> sceneManager.showRegisterBookFormScene());
-        view.getRemoveBookButton().setOnAction(e -> {
-            // Handle remove book logic
+//        view.getManageUsersButton().setOnAction(e -> sceneManager.showManageUsersScene());
+        view.getLogoutButton().setOnAction(e -> {
+            sceneManager.setCurrentUser(null);
+            sceneManager.showLoginScene();
         });
-        view.getLogoutButton().setOnAction(e -> sceneManager.showLoginScene());
     }
 
-    public Parent getView() { return view.getView(); }
+    public Parent getView() {
+        return view.getView();
+    }
 }
