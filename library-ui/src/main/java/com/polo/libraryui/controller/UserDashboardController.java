@@ -12,6 +12,7 @@ import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public class UserDashboardController {
     private UserDashboardView view;
@@ -102,11 +103,23 @@ public class UserDashboardController {
         }
 
         view.getRefreshButton().setDisable(true);
-        bookService.getAllBooks(currentUser)
-                .thenAccept(newBooks -> Platform.runLater(() -> {
-                    this.books = newBooks;
-                    view.refreshBookLists(newBooks);
-                    view.getRefreshButton().setDisable(false);
+
+        CompletableFuture<List<Book>> allBooksFuture = bookService.getAllBooks(currentUser);
+        CompletableFuture<List<Book>> borrowedBooksFuture = bookService.getBorrowedBooks(currentUser);
+
+        CompletableFuture.allOf(allBooksFuture, borrowedBooksFuture)
+                .thenRun(() -> Platform.runLater(() -> {
+                    try {
+                        List<Book> allBooks = allBooksFuture.get();
+                        List<Book> borrowedBooks = borrowedBooksFuture.get();
+
+                        this.books = allBooks;
+                        updateBookLists(allBooks, borrowedBooks);
+                        view.getRefreshButton().setDisable(false);
+                    } catch (Exception e) {
+                        showAlert("Error", "Failed to refresh books: " + e.getMessage());
+                        view.getRefreshButton().setDisable(false);
+                    }
                 }))
                 .exceptionally(ex -> {
                     Platform.runLater(() -> {
@@ -129,6 +142,26 @@ public class UserDashboardController {
     public void updateBooks(List<Book> newBooks) {
         this.books = newBooks;
         view.refreshBookLists(newBooks);
+    }
+    private void updateBookLists(List<Book> allBooks, List<Book> borrowedBooks) {
+        view.getAvailableBooksListView().getItems().clear();
+        view.getBorrowedBooksListView().getItems().clear();
+
+        // Update available books
+        for (Book book : allBooks) {
+            if (book.getAvailableCopies() > 0) {
+                String bookInfo = String.format("ID: %d - %s by %s (Available: %d)",
+                        book.getBookId(), book.getTitle(), book.getAuthor(), book.getAvailableCopies());
+                view.getAvailableBooksListView().getItems().add(bookInfo);
+            }
+        }
+
+        // Update borrowed books
+        for (Book book : borrowedBooks) {
+            String bookInfo = String.format("ID: %d - %s by %s",
+                    book.getBookId(), book.getTitle(), book.getAuthor());
+            view.getBorrowedBooksListView().getItems().add(bookInfo);
+        }
     }
 
     public Parent getView() { return view.getView(); }

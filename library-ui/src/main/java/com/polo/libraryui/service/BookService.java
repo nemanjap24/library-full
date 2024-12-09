@@ -42,4 +42,24 @@ public class BookService {
                     throw new RuntimeException("Failed to fetch books: " + response.statusCode());
                 });
     }
+    public CompletableFuture<List<Book>> getBorrowedBooks(User user) {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(API_BASE_URL + "/transactions/borrowed/" + user.getUserId()))
+                .header("Authorization", "Bearer " + user.getToken())
+                .GET()
+                .build();
+
+        return httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                .thenApply(response -> {
+                    if (response.statusCode() == 200) {
+                        try {
+                            return objectMapper.readValue(response.body(),
+                                    new TypeReference<List<Book>>() {});
+                        } catch (Exception e) {
+                            throw new RuntimeException("Failed to parse borrowed books", e);
+                        }
+                    }
+                    throw new RuntimeException("Failed to fetch borrowed books: " + response.statusCode());
+                });
+    }
 }

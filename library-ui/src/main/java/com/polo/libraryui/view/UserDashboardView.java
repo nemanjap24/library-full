@@ -79,12 +79,11 @@ public class UserDashboardView {
 
     public void refreshBookLists(List<Book> books) {
         availableBooksListView.getItems().clear();
-        borrowedBooksListView.getItems().clear();
 
         for (Book book : books) {
-            String bookInfo = String.format("ID: %d - %s by %s (Available: %d)",
-                    book.getBookId(), book.getTitle(), book.getAuthor(), book.getAvailableCopies());
             if (book.getAvailableCopies() > 0) {
+                String bookInfo = String.format("ID: %d - %s by %s (Available: %d)",
+                        book.getBookId(), book.getTitle(), book.getAuthor(), book.getAvailableCopies());
                 availableBooksListView.getItems().add(bookInfo);
             }
         }
