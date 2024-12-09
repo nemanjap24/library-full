@@ -68,7 +68,6 @@ public class SceneManager {
 
     public void showUserDashboardScene() {
         if (currentUser == null) {
-            System.err.println("No user logged in!");
             showLoginScene();
             return;
         }
@@ -78,7 +77,6 @@ public class SceneManager {
 
     public void showAdminDashboardScene() {
         if (currentUser == null) {
-            System.err.println("No user logged in!");
             showLoginScene();
             return;
         }
