@@ -1,5 +1,6 @@
 package com.polo.libraryui.view;
 
+import com.polo.libraryui.model.Book;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -7,7 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
-public class RegisterBookFormView {
+public class UpdateBookFormView {
     private VBox root;
     private TextField titleField;
     private TextField authorField;
@@ -16,7 +17,7 @@ public class RegisterBookFormView {
     private Button submitButton;
     private Button backButton;
 
-    public RegisterBookFormView() {
+    public UpdateBookFormView(Book book) {
         root = new VBox(20);
         root.setAlignment(Pos.CENTER);
         root.setPadding(new Insets(20));
@@ -26,16 +27,19 @@ public class RegisterBookFormView {
         formGrid.setHgap(10);
         formGrid.setAlignment(Pos.CENTER);
 
-        titleField = new TextField();
-        titleField.setPromptText("Book Title");
-        authorField = new TextField();
-        authorField.setPromptText("Author");
-        isbnField = new TextField();
-        isbnField.setPromptText("ISBN");
-        copiesField = new TextField();
-        copiesField.setPromptText("Number of Copies");
+        titleField = new TextField(book.getTitle());
+        titleField.setPromptText("Title");
 
-        submitButton = new Button("Register");
+        authorField = new TextField(book.getAuthor());
+        authorField.setPromptText("Author");
+
+        isbnField = new TextField(book.getIsbn());
+        isbnField.setPromptText("ISBN");
+
+        copiesField = new TextField(String.valueOf(book.getAvailableCopies()));
+        copiesField.setPromptText("Copies");
+
+        submitButton = new Button("Update");
         backButton = new Button("Back");
 
         formGrid.add(new Label("Title:"), 0, 0);

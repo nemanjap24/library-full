@@ -35,4 +35,9 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
             "(SELECT t2 FROM Transaction t2 WHERE t2.user.userId = t.user.userId " +
             "AND t2.book.bookId = t.book.bookId AND t2.action = 'return' AND t2.date > t.date)")
     List<Transaction> findAllActiveBorrows();
+    @Query("SELECT COUNT(t) > 0 FROM Transaction t WHERE " +
+            "t.book.bookId = :bookId AND t.action = 'borrow' AND NOT EXISTS (" +
+            "SELECT t2 FROM Transaction t2 WHERE t2.user.userId = t.user.userId " +
+            "AND t2.book.bookId = t.book.bookId AND t2.action = 'return' AND t2.date > t.date)")
+    boolean existsActiveBorrowsForBook(@Param("bookId") Long bookId);
 }

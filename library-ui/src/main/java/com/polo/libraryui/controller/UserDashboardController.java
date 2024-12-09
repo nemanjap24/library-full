@@ -41,8 +41,8 @@ public class UserDashboardController {
         view.getReturnBookButton().setOnAction(e -> handleReturnBook());
         view.getRegisterBookButton().setOnAction(e -> sceneManager.showRegisterBookFormScene());
         view.getLogoutButton().setOnAction(e -> sceneManager.showLoginScene());
+        view.getRegisterBookButton().setOnAction(e -> sceneManager.showRegisterBookFormScene());
 
-        // Initial refresh
         handleRefresh();
     }
 

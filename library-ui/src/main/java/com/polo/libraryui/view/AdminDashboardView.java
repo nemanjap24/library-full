@@ -10,7 +10,7 @@ public class AdminDashboardView {
     private VBox root;
     private Button viewInventoryButton;
     private Button registerBookButton;
-    private Button removeBookButton;
+    private Button manageUsersButton;
     private Button logoutButton;
 
     public AdminDashboardView() {
@@ -20,17 +20,15 @@ public class AdminDashboardView {
 
         viewInventoryButton = new Button("View Inventory");
         registerBookButton = new Button("Register a New Book");
-        removeBookButton = new Button("Remove a Book");
+        manageUsersButton = new Button("Manage Users");
         logoutButton = new Button("Logout");
-        logoutButton.getStyleClass().add("back-button");
 
-        viewInventoryButton.getStyleClass().add("button-view");     // Blue style
-        registerBookButton.getStyleClass().add("button-register");  // Green style
-        removeBookButton.getStyleClass().add("button-remove");      // Red style
-
-
-        root.getChildren().addAll(viewInventoryButton, registerBookButton,
-                removeBookButton, logoutButton);
+        root.getChildren().addAll(
+                viewInventoryButton,
+                registerBookButton,
+                manageUsersButton,
+                logoutButton
+        );
     }
 
     public Parent getView() {
@@ -45,8 +43,8 @@ public class AdminDashboardView {
         return registerBookButton;
     }
 
-    public Button getRemoveBookButton() {
-        return removeBookButton;
+    public Button getManageUsersButton() {
+        return manageUsersButton;
     }
 
     public Button getLogoutButton() {

@@ -17,7 +17,6 @@ public class BookController {
         this.bookService = bookService;
     }
 
-    // CRUD endpoints
     @PostMapping
     public ResponseEntity<Book> createBook(@RequestBody Book book) {
         return new ResponseEntity<>(bookService.createBook(book), HttpStatus.CREATED);
@@ -38,16 +37,20 @@ public class BookController {
     @PutMapping("/{id}")
     public ResponseEntity<Book> updateBook(@PathVariable long id, @RequestBody Book book) {
         book.setBookId(id);
-        return ResponseEntity.ok(bookService.updateBook(book));
+        Book updatedBook = bookService.updateBook(book);
+        return ResponseEntity.ok(updatedBook);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteBook(@PathVariable long id) {
-        bookService.deleteBook(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<?> deleteBook(@PathVariable long id) {
+        try {
+            bookService.deleteBook(id);
+            return ResponseEntity.noContent().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        }
     }
 
-    // Search endpoints
     @GetMapping("/search")
     public ResponseEntity<List<Book>> searchBooks(@RequestParam String query) {
         return ResponseEntity.ok(bookService.searchBooks(query));

@@ -75,7 +75,6 @@ public class LoginController {
                                 user.setRole(authResponse.getRole());
                                 user.setToken(authResponse.getToken());
                                 user.setUserId(authResponse.getUserId()); // Make sure this is set
-                                System.out.println("User ID from auth: " + authResponse.getUserId()); // Debug log
                                 sceneManager.setCurrentUser(user);
                                 return user;
                             } catch (Exception ex) {
