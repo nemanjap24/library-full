@@ -116,6 +116,7 @@ public class BookService {
                 .header("Authorization", "Bearer " + user.getToken())
                 .DELETE()
                 .build();
+        System.out.println(request.toString());
 
         return httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
                 .thenAccept(response -> {

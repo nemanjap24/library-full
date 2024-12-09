@@ -2,6 +2,7 @@ package com.polo.librarybackend.services;
 
 import com.polo.librarybackend.entity.Book;
 import com.polo.librarybackend.repository.BookRepository;
+import com.polo.librarybackend.repository.TransactionRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,9 +11,11 @@ import java.util.Optional;
 @Service
 public class BookService {
     private final BookRepository bookRepository;
+    private final TransactionRepository transactionRepository;
 
-    public BookService(BookRepository bookRepository) {
+    public BookService(BookRepository bookRepository, TransactionRepository transactionRepository) {
         this.bookRepository = bookRepository;
+        this.transactionRepository = transactionRepository;
     }
 
     // CRUD operations
@@ -33,6 +36,16 @@ public class BookService {
     }
 
     public void deleteBook(long id) {
+        Book book = bookRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Book not found"));
+
+        // Check for active borrows
+        boolean isBorrowed = transactionRepository.existsActiveBorrowsForBook(id);
+
+        if (isBorrowed) {
+            throw new RuntimeException("Cannot delete book: Book is currently borrowed by users.");
+        }
+
         bookRepository.deleteById(id);
     }
 

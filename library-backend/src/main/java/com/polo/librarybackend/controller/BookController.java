@@ -42,9 +42,13 @@ public class BookController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteBook(@PathVariable long id) {
-        bookService.deleteBook(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<?> deleteBook(@PathVariable long id) {
+        try {
+            bookService.deleteBook(id);
+            return ResponseEntity.noContent().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        }
     }
 
     @GetMapping("/search")
