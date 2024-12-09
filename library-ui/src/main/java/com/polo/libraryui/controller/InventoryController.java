@@ -11,7 +11,6 @@ import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 public class InventoryController {
     private InventoryView view;
@@ -107,7 +106,7 @@ public class InventoryController {
                     loadBooks();
                 });
             }).exceptionally(ex -> {
-                Platform.runLater(() -> showAlert("Error", "Failed to remove book: " + ex.getMessage()));
+                Platform.runLater(() -> showAlert("Error", ex.getMessage()));
                 return null;
             });
         }

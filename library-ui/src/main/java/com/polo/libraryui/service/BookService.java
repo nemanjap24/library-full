@@ -116,12 +116,12 @@ public class BookService {
                 .header("Authorization", "Bearer " + user.getToken())
                 .DELETE()
                 .build();
-        System.out.println(request.toString());
 
         return httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
                 .thenAccept(response -> {
-                    if (response.statusCode() != 200) {
-                        throw new RuntimeException("Failed to delete book: " + response.body());
+                    if (response.statusCode() != 204) {
+                        String errorMessage = response.body();
+                        throw new RuntimeException(errorMessage);
                     }
                 });
     }
