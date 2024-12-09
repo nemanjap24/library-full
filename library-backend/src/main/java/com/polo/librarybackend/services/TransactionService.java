@@ -10,7 +10,7 @@ import com.polo.librarybackend.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -50,7 +50,7 @@ public class TransactionService {
         transaction.setBook(book);
         transaction.setUser(user);
         transaction.setAction("borrow");
-        transaction.setDate(LocalDate.now().toString());
+        transaction.setDate(LocalDateTime.now().toString());
 
         return transactionRepository.save(transaction);
     }
@@ -61,14 +61,21 @@ public class TransactionService {
                 .orElseThrow(() -> new RuntimeException("Book not found"));
         User user = userRepository.findById(dto.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
+
+        List<Transaction> activeBorrows = transactionRepository.findActiveBookBorrows(user.getUserId(), book.getBookId());
+        if (activeBorrows.isEmpty()) {
+            throw new RuntimeException("You have not borrowed this book");
+        }
+
         book.setAvailableCopies(book.getAvailableCopies() + 1);
         bookRepository.save(book);
 
         Transaction transaction = new Transaction();
         transaction.setBook(book);
         transaction.setUser(user);
-        transaction.setAction("lend");
-        transaction.setDate(LocalDate.now().toString());
+        transaction.setAction("return");
+        transaction.setDate(LocalDateTime.now().toString());
+
         return transactionRepository.save(transaction);
     }
     public List<Book> getUserBorrowedBooks(Long userId) {
