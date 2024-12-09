@@ -65,4 +65,5 @@ public class BookService {
         book.setAvailableCopies(newCopies);
         return bookRepository.save(book);
     }
+
 }

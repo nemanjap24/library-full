@@ -37,7 +37,8 @@ public class BookController {
     @PutMapping("/{id}")
     public ResponseEntity<Book> updateBook(@PathVariable long id, @RequestBody Book book) {
         book.setBookId(id);
-        return ResponseEntity.ok(bookService.updateBook(book));
+        Book updatedBook = bookService.updateBook(book);
+        return ResponseEntity.ok(updatedBook);
     }
 
     @DeleteMapping("/{id}")
@@ -46,7 +47,6 @@ public class BookController {
         return ResponseEntity.noContent().build();
     }
 
-    // Search endpoints
     @GetMapping("/search")
     public ResponseEntity<List<Book>> searchBooks(@RequestParam String query) {
         return ResponseEntity.ok(bookService.searchBooks(query));
