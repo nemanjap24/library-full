@@ -17,7 +17,6 @@ public class BookController {
         this.bookService = bookService;
     }
 
-    // CRUD endpoints
     @PostMapping
     public ResponseEntity<Book> createBook(@RequestBody Book book) {
         return new ResponseEntity<>(bookService.createBook(book), HttpStatus.CREATED);

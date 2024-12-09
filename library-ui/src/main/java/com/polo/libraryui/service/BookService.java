@@ -62,4 +62,28 @@ public class BookService {
                     throw new RuntimeException("Failed to fetch borrowed books: " + response.statusCode());
                 });
     }
+    public CompletableFuture<Void> registerBook(User user, Book book) {
+        try {
+            String requestBody = objectMapper.writeValueAsString(book);
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(API_BASE_URL + "/books"))
+                    .header("Content-Type", "application/json")
+                    .header("Authorization", "Bearer " + user.getToken())
+                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                    .build();
+
+            return httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                    .thenAccept(response -> {
+                        if (response.statusCode() != 201) {
+                            throw new RuntimeException("Failed to register book: " + response.body());
+                        }
+                    });
+
+        } catch (Exception e) {
+            CompletableFuture<Void> failedFuture = new CompletableFuture<>();
+            failedFuture.completeExceptionally(e);
+            return failedFuture;
+        }
+    }
 }
