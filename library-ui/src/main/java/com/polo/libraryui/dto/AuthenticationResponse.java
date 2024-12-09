@@ -1,4 +1,4 @@
-package com.polo.librarybackend.dto;
+package com.polo.libraryui.dto;
 
 public class AuthenticationResponse {
     private String token;
@@ -6,26 +6,15 @@ public class AuthenticationResponse {
     private String role;
     private Long userId;
 
-    public AuthenticationResponse(String token, String username, String role, long userId) {
-        this.token = token;
-        this.username = username;
-        this.role = role;
-        this.userId = userId;
+    public AuthenticationResponse() {
     }
 
-    // Getters and setters
     public String getToken() { return token; }
     public void setToken(String token) { this.token = token; }
     public String getUsername() { return username; }
     public void setUsername(String username) { this.username = username; }
     public String getRole() { return role; }
     public void setRole(String role) { this.role = role; }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
+    public Long getUserId() {return userId;}
+    public void setUserId(Long userId) {this.userId = userId;}
 }

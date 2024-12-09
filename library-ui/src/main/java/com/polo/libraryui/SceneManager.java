@@ -2,7 +2,9 @@ package com.polo.libraryui;
 
 import com.polo.libraryui.controller.*;
 import com.polo.libraryui.model.Book;
+import com.polo.libraryui.model.User;
 import javafx.scene.Scene;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.util.List;
@@ -15,7 +17,10 @@ public class SceneManager {
     private Scene userDashboardScene;
     private Scene adminDashboardScene;
     private Scene registerBookFormScene;
+    private User currentUser;
     private List<Book> books;
+    private UserDashboardController userDashboardController;
+    private AdminDashboardController adminDashboardController;
 
     public SceneManager(Stage stage, List<Book> books) {
         this.stage = stage;
@@ -36,15 +41,9 @@ public class SceneManager {
         RegisterController registerController = new RegisterController(stage, this);
         registerScene = new Scene(registerController.getView(), 800, 600);
 
-        // User Dashboard Scene
-        UserDashboardController userDashboardController =
-                new UserDashboardController(stage, this, books);
-        userDashboardScene = new Scene(userDashboardController.getView(), 800, 600);
-
-        // Admin Dashboard Scene
-        AdminDashboardController adminDashboardController =
-                new AdminDashboardController(stage, this);
-        adminDashboardScene = new Scene(adminDashboardController.getView(), 800, 600);
+        // Initialize dashboard scenes without content - will be updated when showing
+        userDashboardScene = new Scene(new VBox(), 800, 600);
+        adminDashboardScene = new Scene(new VBox(), 800, 600);
 
         // Register Book Form Scene
         RegisterBookFormController registerBookFormController =
@@ -61,10 +60,31 @@ public class SceneManager {
         registerBookFormScene.getStylesheets().add(stylesheet);
     }
 
+    public void updateBooks(List<Book> newBooks) {
+        this.books = newBooks;
+        if (stage.getScene() == userDashboardScene && userDashboardController != null) {
+            userDashboardController.updateBooks(newBooks);
+        } else if (stage.getScene() == adminDashboardScene) {
+            // TODO: implement admin dashboard book update if needed
+        }
+    }
+    public void setCurrentUser(User user) {
+        this.currentUser = user;
+    }
+
     public void showStartScene() { stage.setScene(startScene); }
     public void showLoginScene() { stage.setScene(loginScene); }
     public void showRegisterScene() { stage.setScene(registerScene); }
-    public void showUserDashboardScene() { stage.setScene(userDashboardScene); }
-    public void showAdminDashboardScene() { stage.setScene(adminDashboardScene); }
+    public void showUserDashboardScene() {
+        if (currentUser == null) {
+            System.err.println("No user logged in!");
+            showLoginScene();
+            return;
+        }
+
+        userDashboardController = new UserDashboardController(stage, this, books, currentUser);
+        userDashboardScene.setRoot(userDashboardController.getView());
+        stage.setScene(userDashboardScene);
+    }    public void showAdminDashboardScene() { stage.setScene(adminDashboardScene); }
     public void showRegisterBookFormScene() { stage.setScene(registerBookFormScene); }
 }

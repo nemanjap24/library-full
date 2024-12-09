@@ -32,7 +32,13 @@ public class LoginController {
         if (userOpt.isPresent()) {
             User user = userOpt.get();
             String token = jwtService.generateToken(user);
-            AuthenticationResponse response = new AuthenticationResponse(token, user.getUsername(), user.getRole());
+            AuthenticationResponse response = new AuthenticationResponse(
+                    token,
+                    user.getUsername(),
+                    user.getRole(),
+                    user.getUserId() // Make sure this is included
+            );
+            System.out.println("GAS");
             return ResponseEntity.ok(response);
         }
 

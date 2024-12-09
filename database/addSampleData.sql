@@ -17,10 +17,10 @@ INSERT INTO `books` (title, author, isbn, available_copies) VALUES
                                                                 ('The Catcher in the Rye', 'J.D. Salinger', '9780316769488', 2);
 
 INSERT INTO `transaction` (user_id, book_id, action, date) VALUES
-                                                               (3, 1, 'borrow', '2024-12-01'),
-                                                               (3, 2, 'borrow', '2024-12-03'),
-                                                               (4, 3, 'borrow', '2024-12-05'),
-                                                               (3, 1, 'return', '2024-12-06'),
-                                                               (4, 3, 'return', '2024-12-07');
+                                                               (3, 1, 'borrow', '2024-12-01T10:30:00'),
+                                                               (3, 2, 'borrow', '2024-12-03T14:15:00'),
+                                                               (4, 3, 'borrow', '2024-12-05T09:45:00'),
+                                                               (3, 1, 'return', '2024-12-06T16:20:00'),
+                                                               (4, 3, 'return', '2024-12-07T11:05:00');
 
 COMMIT;

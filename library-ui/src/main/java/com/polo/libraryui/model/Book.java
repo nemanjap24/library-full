@@ -15,6 +15,9 @@ public class Book {
         this.availableCopies = availableCopies;
     }
 
+    public Book() {
+    }
+
     public long getBookId() { return bookId; }
     public String getTitle() { return title; }
     public String getIsbn() { return isbn; }
@@ -33,5 +36,16 @@ public class Book {
         if (availableCopies > 0) {
             availableCopies--;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "bookId=" + bookId +
+                ", title='" + title + '\'' +
+                ", isbn='" + isbn + '\'' +
+                ", author='" + author + '\'' +
+                ", availableCopies=" + availableCopies +
+                '}';
     }
 }

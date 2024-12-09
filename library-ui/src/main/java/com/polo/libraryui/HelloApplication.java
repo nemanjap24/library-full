@@ -1,6 +1,7 @@
 package com.polo.libraryui;
 
 import com.polo.libraryui.model.Book;
+import com.polo.libraryui.util.HttpService;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -8,25 +9,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HelloApplication extends Application {
+    private final HttpService httpService = new HttpService();
 
     @Override
     public void start(Stage primaryStage) {
-        List<Book> books = getBooksList();
-
-        SceneManager sceneManager = new SceneManager(primaryStage, books);
+        // Start with empty book list
+        List<Book> initialBooks = new ArrayList<>();
+        SceneManager sceneManager = new SceneManager(primaryStage, initialBooks);
         sceneManager.showStartScene();
 
         primaryStage.setTitle("Library App");
         primaryStage.show();
-    }
 
-    // todo: to be removed
-    private List<Book> getBooksList() {
-        List<Book> books = new ArrayList<>();
-        books.add(new Book(1L, "Book 1", "ISBN001", "Author 1", 5));
-        books.add(new Book(2L, "Book 2", "ISBN002", "Author 2", 3));
-        // Add more books as needed
-        return books;
+//        // Fetch books asynchronously
+//        httpService.getAllBooks()
+//                .thenAccept(books -> Platform.runLater(() -> {
+//                    sceneManager.updateBooks(books);
+//                }))
+//                .exceptionally(throwable -> {
+//                    Platform.runLater(() -> {
+//                        // Show error alert
+//                        System.err.println("Failed to load books: " + throwable.getMessage());
+//                    });
+//                    return null;
+//                });
     }
 
     public static void main(String[] args) {
