@@ -45,6 +45,10 @@ public class SceneManager {
         // Set the scene to the stage
         stage.setScene(scene);
     }
+    public User getCurrentUser() {
+        return currentUser;
+    }
+
 
     public void setCurrentUser(User user) {
         this.currentUser = user;
@@ -83,6 +87,7 @@ public class SceneManager {
     }
 
     public void showRegisterBookFormScene() {
+        registerBookFormController = new RegisterBookFormController(stage, this);
         scene.setRoot(registerBookFormController.getView());
     }
 
