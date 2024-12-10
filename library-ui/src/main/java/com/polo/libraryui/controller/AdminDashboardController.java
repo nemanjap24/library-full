@@ -23,7 +23,7 @@ public class AdminDashboardController {
     private void initialize() {
         view.getViewInventoryButton().setOnAction(e -> sceneManager.showInventoryScene());
         view.getRegisterBookButton().setOnAction(e -> sceneManager.showRegisterBookFormScene());
-//        view.getManageUsersButton().setOnAction(e -> sceneManager.showManageUsersScene());
+        view.getManageUsersButton().setOnAction(e -> sceneManager.showManageUsersScene());
         view.getLogoutButton().setOnAction(e -> {
             sceneManager.setCurrentUser(null);
             sceneManager.showLoginScene();

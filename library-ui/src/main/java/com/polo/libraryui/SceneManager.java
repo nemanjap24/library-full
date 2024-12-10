@@ -22,7 +22,9 @@ public class SceneManager {
     private AdminDashboardController adminDashboardController;
     private RegisterBookFormController registerBookFormController;
     private InventoryController inventoryController;
-//    private ManageUsersController manageUsersController;
+    private ManageUsersController manageUsersController;
+    private UpdateUserController updateUserController;
+    private UserBorrowedBooksController userBorrowedBooksController;
     private UpdateBookFormController updateBookFormController;
 
     public SceneManager(Stage stage, List<Book> books) {
@@ -109,11 +111,20 @@ public class SceneManager {
         inventoryController = new InventoryController(stage, this);
         scene.setRoot(inventoryController.getView());
     }
+    public void showManageUsersScene() {
+        manageUsersController = new ManageUsersController(stage, this);
+        scene.setRoot(manageUsersController.getView());
+    }
 
-//    public void showManageUsersScene() {
-//        manageUsersController = new ManageUsersController(stage, this);
-//        scene.setRoot(manageUsersController.getView());
-//    }
+    public void showUpdateUserScene(User user) {
+        updateUserController = new UpdateUserController(stage, this, user);
+        scene.setRoot(updateUserController.getView());
+    }
+
+    public void showUserBorrowedBooksScene(User user) {
+        userBorrowedBooksController = new UserBorrowedBooksController(stage, this, user);
+        scene.setRoot(userBorrowedBooksController.getView());
+    }
     public void showUpdateBookFormScene(Book book) {
         updateBookFormController = new UpdateBookFormController(stage, this, book);
         scene.setRoot(updateBookFormController.getView());
