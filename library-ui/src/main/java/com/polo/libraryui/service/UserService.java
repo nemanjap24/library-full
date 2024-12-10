@@ -19,6 +19,7 @@ public class UserService {
         this.objectMapper = new ObjectMapper();
     }
 
+
     public CompletableFuture<List<User>> getAllUsers(User currentUser) {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(API_BASE_URL))
@@ -33,13 +34,13 @@ public class UserService {
                             return objectMapper.readValue(response.body(),
                                     objectMapper.getTypeFactory().constructCollectionType(List.class, User.class));
                         } catch (Exception e) {
-                            throw new RuntimeException("Failed to parse users", e);
+                            throw new RuntimeException("Failed to parse users");
                         }
+                    } else {
+                        throw new RuntimeException("Failed to fetch users");
                     }
-                    throw new RuntimeException("Failed to fetch users: " + response.statusCode());
                 });
     }
-
     public CompletableFuture<Void> deleteUser(User currentUser, Long userId) {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(API_BASE_URL + "/" + userId))

@@ -1,5 +1,7 @@
 package com.polo.libraryui.model;
 
+import java.util.List;
+
 public class User {
     private Long userId;
     private String username;
@@ -7,6 +9,8 @@ public class User {
     private String role;
     private String email;
     private String token;
+    private List<Book> borrowedBooks; // Add this field
+
 
     public User() {
     }
@@ -57,5 +61,12 @@ public class User {
 
     public void setToken(String token) {
         this.token = token;
+    }
+    public List<Book> getBorrowedBooks() {
+        return borrowedBooks;
+    }
+
+    public void setBorrowedBooks(List<Book> borrowedBooks) {
+        this.borrowedBooks = borrowedBooks;
     }
 }

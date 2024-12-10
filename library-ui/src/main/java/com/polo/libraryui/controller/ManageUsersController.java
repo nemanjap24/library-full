@@ -47,8 +47,8 @@ public class ManageUsersController {
     private void updateUsersListView() {
         view.getUsersListView().getItems().clear();
         for (User user : users) {
-            String userInfo = String.format("ID: %d - %s (%s)",
-                    user.getUserId(), user.getUsername(), user.getRole());
+            String userInfo = String.format("Username: %s | Role: %s | Borrowed Books: %d",
+                    user.getUsername(), user.getRole(), user.getBorrowedBooks().size());
             view.getUsersListView().getItems().add(userInfo);
         }
     }
@@ -104,9 +104,7 @@ public class ManageUsersController {
 
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.initOwner(sceneManager.getStage());
         alert.setTitle(title);
-        alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
     }
